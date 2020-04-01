@@ -1,9 +1,9 @@
-'use strict';
-import path from 'path';
-import { platform } from 'os';
-import { remote } from 'electron';
-import { rootPath } from 'electron-root-path';
+const path = require('path');
+const { platform } = require('os');
+const { remote } = require('electron');
+const { rootPath } = require('electron-root-path');
 
+const process = remote.process
 const IS_PROD = process.env.NODE_ENV === 'production';
 const root = rootPath;
 const { getAppPath } = remote.app;
@@ -16,4 +16,4 @@ const binariesPath =
         : path.join(root, './src/bin', platform());
 
 
-export const execPath = path.resolve(path.join(binariesPath, './grpcurl'));
+exports.execPath = path.resolve(path.join(binariesPath, './grpcurl'));

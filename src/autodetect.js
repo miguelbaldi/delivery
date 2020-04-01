@@ -1,5 +1,5 @@
-import grpcurl from './grpcurl';
-import { log } from './app';
+const grpcurl = require('./grpcurl');
+const { log } = require('./app');
 
 function matchSafe(string, regex) {
   return (string.match && string.match(regex)) || [];
@@ -156,7 +156,7 @@ const isCached = (url) => {
   return false;
 };
 
-export default function detect(url, ignoreCooldown) {
+function detect(url, ignoreCooldown) {
   return new Promise((resolve, reject) => {
     let result = { url };
     if (isCached(url, ignoreCooldown)) {
@@ -211,3 +211,4 @@ Object.keys(stored).forEach((key) => {
   const item = stored[key];
   history[key] = item;
 });
+exports = detect;

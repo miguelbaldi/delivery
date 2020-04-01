@@ -1,4 +1,4 @@
-import { stateEvent, getState, setState } from './app';
+const { stateEvent, getState, setState } = require('./app');
 
 const history = [];
 const historyList = document.querySelector('.history');

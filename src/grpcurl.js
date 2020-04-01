@@ -1,6 +1,6 @@
-import cmd from 'node-cmd';
-import { log } from './app';
-import { execPath } from './binaries';
+const cmd = require('node-cmd');
+const { log } = require('./app');
+const { execPath } = require('./binaries');
 
 const grpcurlWrapper = params => new Promise((resolve, reject) => {
   try {
@@ -35,4 +35,4 @@ const grpcurl = {
   describe: (url, method) => grpcurlWrapper(`${url} describe ${method}`),
 };
 
-export default grpcurl;
+exports.grpcurl = grpcurl;

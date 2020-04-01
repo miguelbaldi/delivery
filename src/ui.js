@@ -1,14 +1,15 @@
-import _ from 'lodash/core';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/shell/shell';
-import codeMirror from 'codemirror';
-import { js } from 'js-beautify';
-import jQuery from 'jquery';
-import 'selectize';
+'use strict';
+const _ = require('lodash/core');
+require('codemirror/mode/javascript/javascript');
+require('codemirror/mode/shell/shell');
+const codeMirror = require('codemirror');
+const { js } = require('js-beautify');
+const jQuery = require('jquery');
+require('selectize');
 
-import grpcurl from './grpcurl';
-import detect, { getLogs } from './autodetect';
-import { codeMirrorConfig, setMethod, methodEvent, stateEvent, getMethod, getState, setState, getId, getUrls, setMethods, setBody, dispatchMethodCacheChanged, logsEvent } from './app';
+const grpcurl = require('./grpcurl').grpcurl;
+const { detect,  getLogs } = require('./autodetect');
+const { codeMirrorConfig, setMethod, methodEvent, stateEvent, getMethod, getState, setState, getId, getUrls, setMethods, setBody, dispatchMethodCacheChanged, logsEvent } = require('./app');
 
 // Input
 const root = document;

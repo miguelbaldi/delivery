@@ -61,3 +61,6 @@ typings/
 .next
 node_modules
 out
+
+# VS Code
+.vscode/delivery.code-workspace
