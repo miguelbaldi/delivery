@@ -1,4 +1,4 @@
-const grpcurl = require('./grpcurl');
+const grpcurl = require('./grpcurl').grpcurl;
 const { log } = require('./app');
 
 function matchSafe(string, regex) {
@@ -211,4 +211,6 @@ Object.keys(stored).forEach((key) => {
   const item = stored[key];
   history[key] = item;
 });
-exports = detect;
+
+
+exports.detect = detect;
