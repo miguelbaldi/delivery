@@ -1,4 +1,5 @@
 'use strict';
+const { remote } = require('electron');
 const _ = require('lodash/core');
 require('codemirror/mode/javascript/javascript');
 require('codemirror/mode/rpm/rpm');
@@ -14,6 +15,16 @@ const { codeMirrorConfig, setMethod, methodEvent, stateEvent, getMethod, getStat
 
 // Input
 const root = document;
+
+// Open the DevTools / Refresh app.
+root.addEventListener("keydown", function (e) {
+  if (e.which === 123) { // Opens Dev Tools on F12
+    remote.getCurrentWindow().toggleDevTools();
+  } else if (e.which === 116) { // Refreshs app on F5
+    location.reload();
+  }
+});
+
 const inputFields = {
   autodetect: root.querySelector('button.autodetect'),
   url: jQuery('.url').selectize({
