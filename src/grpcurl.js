@@ -18,16 +18,16 @@ const grpcurlWrapper = params => new Promise((resolve, reject) => {
   }
 });
 
-const sendWithBody = ({ body, url, method }) => grpcurlWrapper(`-d '${body}' ${url} ${method}`);
+const sendWithBody = ({ headers ,body, url, method }) => grpcurlWrapper(`${headers} -d '${body}' ${url} ${method}`);
 const sendEmpty = ({ url, method }) => grpcurlWrapper(`${url} ${method}`);
 
 const grpcurl = {
   help: () => grpcurlWrapper('-help'),
   version: () => grpcurlWrapper('-version'),
-  send: ({ body, url, method }) => {
+  send: ({ headers, body, url, method }) => {
     const hasBody = body && body.length > 3;
     if (hasBody) {
-      return sendWithBody({ body, url, method });
+      return sendWithBody({ headers, body, url, method });
     }
     return sendEmpty({ url, method });
   },

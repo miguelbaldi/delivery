@@ -69,9 +69,14 @@
                   <select name="method" id="method" class="method selectize"></select>
                   <img src="loader.svg" alt="Loading" class="loading-method hidden">
                 </div>
+                <div class="form-group headers-group">
+                  <label>Headers <span class="headers type">plain/text</span></label>
+                  <textarea id="editor-headers" class="form-control codemirror headers"></textarea>
+                  <img src="loader.svg" alt="Loading" class="loading-body hidden">
+                </div>
                 <div class="form-group body-group">
-                  <label>Body <span class="type">application/json</span></label>
-                  <textarea class="form-control codemirror body"></textarea>
+                  <label>Body <span class="body type">application/json</span></label>
+                  <textarea id="editor-body" class="form-control codemirror body"></textarea>
                   <img src="loader.svg" alt="Loading" class="loading-body hidden">
                 </div>
                 <div class="form-actions">

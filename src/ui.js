@@ -1,6 +1,7 @@
 'use strict';
 const _ = require('lodash/core');
 require('codemirror/mode/javascript/javascript');
+require('codemirror/mode/rpm/rpm');
 require('codemirror/mode/shell/shell');
 const codeMirror = require('codemirror');
 const { js } = require('js-beautify');
@@ -8,7 +9,7 @@ const jQuery = require('jquery');
 require('selectize');
 
 const grpcurl = require('./grpcurl').grpcurl;
-const { detect,  getLogs } = require('./autodetect');
+const { detect } = require('./autodetect');
 const { codeMirrorConfig, setMethod, methodEvent, stateEvent, getMethod, getState, setState, getId, getUrls, setMethods, setBody, dispatchMethodCacheChanged, logsEvent } = require('./app');
 
 // Input
@@ -27,24 +28,30 @@ const inputFields = {
     sortField: 'text',
     placeholder: 'packagename.serviceName/Method',
   })[0].selectize,
-  body_type: root.querySelector('.type'),
+  headers_type: root.querySelector('.headers.type'),
+  headers: codeMirror.fromTextArea(
+    root.querySelector('#editor-headers'),
+    _.defaults({
+      mode: 'rpm-spec'
+    }, codeMirrorConfig)),
+  body_type: root.querySelector('.body.type'),
   body: codeMirror.fromTextArea(
-    root.querySelector('.body'),
-    _.defaults(codeMirrorConfig, {
-      mode: 'javascript',
-    })),
+    root.querySelector('#editor-body'),
+    _.defaults({
+      mode: 'javascript'
+    }, codeMirrorConfig)),
   response: codeMirror.fromTextArea(
     root.querySelector('.response'),
-    _.defaults(codeMirrorConfig, {
+    _.defaults({
       mode: 'shell',
-      readOnly: true,
-    })),
+      readOnly: true
+    }, codeMirrorConfig)),
   logs: codeMirror.fromTextArea(
     root.querySelector('.logs'),
-    _.defaults(codeMirrorConfig, {
+    _.defaults({
       mode: 'shell',
-      readOnly: true,
-    })),
+      readOnly: true
+    }, codeMirrorConfig)),
   send: root.querySelector('.send'),
   reset: root.querySelector('.reset'),
   logsBtn: root.querySelector('.btn-logs'),
@@ -145,11 +152,22 @@ function onSend(e) {
     method: inputFields.method.getValue(),
     body,
   });
-  grpcurl.send({ url, method, body }).then(res => {
+  let headers = handleHeaders(inputFields.headers.getValue());
+  grpcurl.send({ url, method, body, headers }).then(res => {
     inputFields.response.setValue(res + '');
   }).catch((error) => {
     inputFields.response.setValue(error + '');
   })
+}
+
+function handleHeaders(headers) {
+  if (headers && (headers.length > 3) && headers.includes(":")) {
+    return '-H ' + headers.split('\n').map(function(header) {
+      return "'" + header + "'"
+    }).join(' -H ');
+  } else {
+    return headers;
+  }
 }
 
 function onReset(e) {
@@ -171,7 +189,7 @@ function onMethodCacheUpdated(e) {
   const filteredToUrl = newMethodCache
     .filter(method => method.url === activeUrl);
 
-    // methods
+  // methods
   filteredToUrl
     .forEach((method) => {
       const service = method.service;
